@@ -10,8 +10,10 @@ namespace CineBase
     {
 	[Display(Name="Uživatelské jméno:")]
 	public string Username { get; set; }
+
 	[Display(Name = "Heslo:")]
 	public string Password { get; set; }
+
 	[Display(Name = "Email:")]
 	public string Email { get; set; }
     }

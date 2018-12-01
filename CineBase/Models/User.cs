@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +8,8 @@ namespace CineBase.Models
 {
     public class User
     {
-	public int ID { get; set; }
+	[Index]
+	public int Id { get; set; }
 
 	public string Username { get; set; }
 
@@ -16,8 +18,6 @@ namespace CineBase.Models
 	public string PasswordSalt { get; set; }
 
 	public string Email { get; set; }
-
-	public int CommentCount { get; set; }
 
 	public DateTime Created { get; set; }
     }
