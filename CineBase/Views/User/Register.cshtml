@@ -5,16 +5,22 @@
 
 <h2>Registrace</h2>
 <div class="form-group">
+    @using (Html.BeginForm("Add", "User"))
+    {
     <div class="row">
-        <span class="col-xs-5 col-sm-4 col-md-2">@Html.LabelFor(x => x.Username)</span>
-        <span class="col-xs-4 col-sm-4 col-md-2">@Html.EditorFor(x => x.Username)</span>
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Username)</span>
+        @Html.EditorFor(x => x.Username)
     </div>
     <div class="row">
-        <span class="col-xs-5 col-sm-4 col-md-2">@Html.LabelFor(x => x.Password)</span>
-        <span class="col-xs-4 col-sm-4 col-md-2">@Html.EditorFor(x => x.Password)</span>
+	<span class="col-md-2 control-label">@Html.LabelFor(x => x.Password)</span>
+        @Html.EditorFor(x => x.Password)
     </div>
     <div class="row">
-        <span class="col-xs-5 col-sm-4 col-md-2">@Html.LabelFor(x => x.Email)</span>
-        <span class="col-xs-4 col-sm-4 col-md-2"> @Html.EditorFor(x => x.Email)</span>
+	<span class="col-md-2 control-label">@Html.LabelFor(x => x.Email)</span>
+        @Html.EditorFor(x => x.Email)
     </div>
+    <div class="row">
+	<button class="btn btn-info" type="submit">Registrovat</button>
+    </div>
+    }
 </div>

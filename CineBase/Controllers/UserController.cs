@@ -8,6 +8,8 @@ namespace CineBase.Controllers
 {
     public class UserController : Controller
     {
+	UserManger manager = new UserManger();	
+
         public IActionResult Index()
         {
             return View();
@@ -21,6 +23,11 @@ namespace CineBase.Controllers
 	public ViewResult Login()
 	{
 	    return View();
+	}
+
+	public void Add(UserViewModel model)
+	{
+	    manager.Add(model);
 	}
     }
 }

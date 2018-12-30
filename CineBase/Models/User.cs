@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CineBase.Models
+namespace CineBase
 {
     public class User
     {
-	[Index]
+
 	public int Id { get; set; }
 
 	public string Username { get; set; }

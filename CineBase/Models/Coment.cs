@@ -8,7 +8,7 @@ namespace CineBase
 {
     public class Coment
     {	
-	[Index]
+	
 	public int Id{ get; set; }
 
 	[ForeignKey("User")]

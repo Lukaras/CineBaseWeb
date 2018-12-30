@@ -12,6 +12,7 @@ namespace CineBase
 	public string Username { get; set; }
 
 	[Display(Name = "Heslo:")]
+	[UIHint("_PasswordEditor")]
 	public string Password { get; set; }
 
 	[Display(Name = "Email:")]

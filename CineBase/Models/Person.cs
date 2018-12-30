@@ -8,7 +8,7 @@ namespace CineBase
 {
     public class Person
     {
-	[Index]
+	
 	public int Id { get; set; }
 
 	public string Name { get; set; }
