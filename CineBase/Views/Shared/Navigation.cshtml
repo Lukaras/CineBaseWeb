@@ -1,0 +1,53 @@
+﻿
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CineBase</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle"> Filmy <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
+                        <li><a asp-area="" asp-controller="Movies" asp-action="Index">Seznam</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle"> Osobnosti <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="People" asp-action="Add">Přidat</a></li>
+                        <li><a asp-area="" asp-controller="People" asp-action="Index">Seznam</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle"> Žebříčky <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
+                        <li><a asp-area="" asp-controller="Movies" asp-action="Index">Seznam</a></li>
+                    </ul>
+                </li>
+            </ul>
+            @*if (Model == null)
+        {*@
+            <ul class="nav navbar-nav navbar-right">
+                <li><a asp-area="" asp-controller="User" asp-action="Register">Registrovat</a></li>
+                <li><a asp-area="" asp-controller="User" asp-action="Login">Přihlásit</a></li>
+            </ul>
+            @*}
+            else
+            {
+            <div class="nav navbar-nav navbar-right">
+                <a asp-area="" asp-controller="User" asp-action="Detail/@Model.Id">@Model.Username</a>
+            </div>
+            }*@
+        </div>
+    </div>
+</nav>

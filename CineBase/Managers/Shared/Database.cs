@@ -9,6 +9,7 @@ namespace CineBase
     public class Database
     {
 	public static SqlConnection db;
+	public static string Username = string.Empty;
 	
 	public static void SetDb(string connectionString)
 	{

@@ -1,0 +1,30 @@
+﻿@model MovieViewModel
+<div id="add-form" class="panel panel-default view-area">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        @using (Html.BeginForm("Add", "Movies"))
+    {
+        <div class="row">
+            <div class="form-area">
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Title)</span>
+                    @Html.EditorFor(x => x.Title)
+                    @Html.ValidationMessageFor(x => x.Title)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
+                    @Html.EditorFor(x => x.OriginalTitle)
+                    @Html.ValidationMessageFor(x => x.OriginalTitle)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
+                    @Html.EditorFor(x => x.Description)
+                    @Html.ValidationMessageFor(x => x.Description)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-info" type="submit">Registrovat</button>
+        </div>
+}
+    </div>
+</div>

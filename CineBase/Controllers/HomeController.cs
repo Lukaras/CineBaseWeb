@@ -8,7 +8,7 @@ using CineBase.Models;
 
 namespace CineBase.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {
@@ -32,6 +32,11 @@ namespace CineBase.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ActionResult Navigation()
+        {
+            return PartialView();
         }
     }
 }

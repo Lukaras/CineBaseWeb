@@ -10,14 +10,17 @@
     <div class="row">
         <span class="col-md-2 control-label">@Html.LabelFor(x => x.Username)</span>
         @Html.EditorFor(x => x.Username)
+	@Html.ValidationMessageFor(x => x.Username)
     </div>
     <div class="row">
-	<span class="col-md-2 control-label">@Html.LabelFor(x => x.Password)</span>
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Password)</span>
         @Html.EditorFor(x => x.Password)
+        @Html.ValidationMessageFor(x => x.Password)
     </div>
     <div class="row">
-	<span class="col-md-2 control-label">@Html.LabelFor(x => x.Email)</span>
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Email)</span>
         @Html.EditorFor(x => x.Email)
+        @Html.ValidationMessageFor(x => x.Email)
     </div>
     <div class="row">
 	<button class="btn btn-info" type="submit">Registrovat</button>
