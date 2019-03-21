@@ -1,0 +1,4 @@
+﻿@model int?
+
+@Html.DropDownListFor(o => o, Enum.GetValues(typeof(ListType)).Cast<ListType>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }))
+

@@ -8,7 +8,7 @@ namespace CineBase.Controllers
 {
     public class MoviesController : BaseController
     {
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
         }
@@ -23,9 +23,9 @@ namespace CineBase.Controllers
             return View();
         }
 
-        public void Add(MovieViewModel model)
+        public void _Add(MovieViewModel model)
         {
-            Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, {1}, {2}, {3}, {4}", Database.GetLast("[Movie]"), model.Title, model.OriginalTitle, model.Description, model.Description));
+            Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", Database.GetLast("[Movie]"), model.Title, model.OriginalTitle, model.Description, model.Genre));
         }
     }
 }

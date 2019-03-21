@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace CineBase
 {
-    public enum Genre
+    public enum ListType
     {
-        Undefined = 0,
+        [StringValue("Žánr")]
+        Žánr = 0,
 
-        Action = 1,
+        [StringValue("Tag")]
+        Tag = 1,
     }
 }

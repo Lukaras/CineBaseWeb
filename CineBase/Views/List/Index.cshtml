@@ -1,0 +1,58 @@
+﻿@model ListItems
+
+<h3>Seznamy</h3>
+<div class="col-md-12" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-xs-6 col-sm-1" style="text-align: right">
+            @Html.LabelFor(x => x.Addable.Item)
+        </div>
+        @Html.EditorFor(x => x.Addable.Item)
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-sm-1" style="text-align: right">
+            @Html.LabelFor(x => x.Addable.Content)
+        </div>
+        @Html.EditorFor(x => x.Addable.Content)
+    </div>
+    <div class="col-xs-6 col-sm-1"></div>
+    <div class="row">
+        <button onclick="add()" class="btn btn-success" style="margin-top: 10px">Přidat</button>
+    </div>
+    <hr />
+</div>
+
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    <div class="panel-body panel-nav">
+        <ul id="tabs" class="nav nav-pills">
+            <li class="active">
+                <a data-toggle="tab" href="#genres">
+                    Žánry
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tags">
+                    Tagy
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="tabsContent" class="tab-content">
+        <div id="genres" class="tab-pane fade">
+            @Html.Partial("ListItem", Model.Genres)
+        </div>
+
+        <div id="tags" class="tab-pane fade">
+            @Html.Partial("ListItem", Model.Tags)
+        </div>
+    </div>
+</div>
+<div class="col-md-1"></div>
+<div class="row"></div>
+
+<script>
+    function add() {
+        $.post("/List/_AddItem", { model: { type: $("#Addable_Item").val(), content: $("#Addable_Content").val() } });
+
+    }
+</script>
