@@ -14,15 +14,15 @@ namespace CineBase
 {
     public class Program
     {
-	public static void Main(string[] args)
-	{
-	    Database.SetDb(@"Data Source=LUKIN-PC\SqlExpress; Initial Catalog=CineBaseDb; Integrated Security=True; MultipleActiveResultSets=true");
-	    BuildWebHost(args).Run();	    
-	}
+        public static void Main(string[] args)
+        {
+            Database.SetDb(@"Data Source=LUKIN-PC\SqlExpress; Initial Catalog=CineBaseDb; Integrated Security=True; MultipleActiveResultSets=true");    
+            BuildWebHost(args).Run();
+        }
 
-	public static IWebHost BuildWebHost(string[] args) =>
-	    WebHost.CreateDefaultBuilder(args)
-		.UseStartup<Startup>()
-		.Build();
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .Build();
     }
 }

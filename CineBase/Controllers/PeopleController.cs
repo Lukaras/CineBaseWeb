@@ -8,7 +8,7 @@ namespace CineBase.Controllers
 {
     public class PeopleController : Controller
     {
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
         }
@@ -21,6 +21,11 @@ namespace CineBase.Controllers
         public ActionResult Detail()
         {
             return View();
+        }
+
+        public void _Add(PersonViewModel model)
+        {
+            Database.Add("[Person]", "[Id], [Firstname], [Lastname], [Birthdate], [Deathdate], [Birthplace], [Bio]", string.Format("{0}, '{1}', '{2}', {3}, {4}, '{5}', '{6}'", Database.GetLast("Person") + 1, model.Firstname, model.Lastname, model.Birthdate, model.Deathdate, model.Birthplace, model.Bio));
         }
     }
 }

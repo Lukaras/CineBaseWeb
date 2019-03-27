@@ -17,12 +17,20 @@ namespace CineBase
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        public Genre Genre { get; set; }
+        public List<ListItem> Genres { get; set; }
+
+        public int Genre { get; set; }
+
+        public string GenreText { get; set; }
+
+        public List<int> Tags { get; set; }
 
         public List<string> Comments { get; set; }
 
         public List<Person> People { get; set; }
 
         public float Rating { get; set; }
+
+
     }
 }

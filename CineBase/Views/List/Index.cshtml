@@ -52,7 +52,11 @@
 
 <script>
     function add() {
-        $.post("/List/_AddItem", { model: { type: $("#Addable_Item").val(), content: $("#Addable_Content").val() } });
-
+        $.post("/List/_AddItem", { model: { item: $("#Addable_Item").val(), content: $("#Addable_Content").val() } });
+        console.log($("#Addable_Item").val());
+        if ($("#Addable_Item").val() == 0) 
+            $("#genres tr:last").after('<tr><td>' + $("#Addable_Content").val() + '</td><td>Nový záznam</td></tr>');
+        if ($("#Addable_Item").val() == 1) 
+            $("#tags tr:last").after('<tr><td>' + $("#Addable_Content").val() + '</td><td>Nový záznam</td></tr>');
     }
 </script>

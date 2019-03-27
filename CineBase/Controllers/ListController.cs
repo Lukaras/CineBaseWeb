@@ -47,5 +47,12 @@ namespace CineBase.Controllers
         {
             Database.Add("[List]", "[Id], [Content], [ListType]", string.Format("{0}, '{1}', {2}", Database.GetLast("List") + 1, model.Content, model.Item));
         }
+
+        public void DeleteAjax(int id)
+        {
+            string query = string.Format("DELETE FROM [List] WHERE [Id] = {0}", id);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            cmd.ExecuteNonQuery();
+        }
     }
 }

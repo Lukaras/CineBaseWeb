@@ -1,11 +1,22 @@
 ﻿@model List<ListItem>
 
+
 <table>
     @foreach (ListItem i in Model)
     {
-        <tr><td>@i.Content</td></tr>
+    <tr id="row_@Html.Raw(i.Id)">
+        <td>@i.Content</td>
+        <td><button class="btn btn-danger" onclick="deleteAjax(@i.Id)">Smazat</button></td>
+    </tr>
     }
 
 </table>
+
+<script>
+    function deleteAjax(mId) {
+        $.post("/List/DeleteAjax", { id: mId });
+        $("#row_" + mId).hide(150);
+    }
+</script>
 
 

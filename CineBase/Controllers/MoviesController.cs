@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,25 @@ namespace CineBase.Controllers
 
         public ActionResult Add()
         {
-            return View();
+
+            List<ListItem> list = new List<ListItem>();
+            string query = string.Format("SELECT [Id], [Content] FROM [List] WHERE [ListType] = {0}", (int)ListType.Žánr);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ListItem item = new ListItem
+                {
+                    Id = reader.GetInt32(0),
+                    Content = reader.GetString(1)
+                };
+                list.Add(item);
+            }
+            MovieViewModel model = new MovieViewModel
+            {
+                Genres = list,
+            };
+            return View(model);
         }
 
         public ActionResult Detail()
@@ -25,7 +44,7 @@ namespace CineBase.Controllers
 
         public void _Add(MovieViewModel model)
         {
-            Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", Database.GetLast("[Movie]"), model.Title, model.OriginalTitle, model.Description, model.Genre));
+            Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", Database.GetLast("[Movie]") + 1, model.Title, model.OriginalTitle, model.Description, model.Genre));
         }
     }
 }

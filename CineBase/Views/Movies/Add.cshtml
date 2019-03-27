@@ -1,8 +1,6 @@
 ﻿@model MovieViewModel
 <div id="add-form" class="panel panel-default view-area">
     <div class="col-lg-12 col-md-12 col-xs-12">
-        @using (Html.BeginForm("_Add", "Movies"))
-    {
         <div class="row">
             <div class="form-area">
                 <div class="row">
@@ -20,11 +18,32 @@
                     @Html.EditorFor(x => x.Description)
                     @Html.ValidationMessageFor(x => x.Description)
                 </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Genre)</span>
+                    @Html.DropDownList("Genre", new SelectList(Model.Genres, "Id", "Content"))
+                    @Html.ValidationMessageFor(x => x.Genre)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Tags)</span>
+                    @Html.EditorFor(x => x.Tags)
+                    @Html.ValidationMessageFor(x => x.Tags)
+                </div>
             </div>
         </div>
         <div class="row">
-            <button class="btn btn-info" type="submit">Registrovat</button>
+            <button class="btn btn-info" onclick="addMovie()">Přidat</button>
         </div>
-}
     </div>
 </div>
+
+<script>
+    function addMovie() {
+        var model = {
+            title: $("#Title").val(),
+            originalTitle: $("#OriginalTitle").val(),
+            description: $("#Description").val(),
+            genre: $("#Genre").val()
+        };
+        $.post("/Movies/_Add", model);
+    }
+</script>
