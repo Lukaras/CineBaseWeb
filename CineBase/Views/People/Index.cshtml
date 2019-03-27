@@ -1,0 +1,7 @@
+﻿@model List<PersonViewModel>
+
+@foreach (PersonViewModel p in Model)
+{
+    <p>@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)</p>
+    <br />
+}

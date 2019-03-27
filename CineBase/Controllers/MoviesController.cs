@@ -11,7 +11,21 @@ namespace CineBase.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            List<MovieViewModel> list = new List<MovieViewModel>();
+            string query = string.Format("SELECT [Id], [Title], [OriginalTitle] FROM [Movie]");
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                MovieViewModel item = new MovieViewModel
+                {
+                    Id = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    OriginalTitle = reader.GetString(2),
+                };
+                list.Add(item);
+            }
+            return View(list);
         }
 
         public ActionResult Add()
@@ -46,5 +60,6 @@ namespace CineBase.Controllers
         {
             Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", Database.GetLast("[Movie]") + 1, model.Title, model.OriginalTitle, model.Description, model.Genre));
         }
+
     }
 }
