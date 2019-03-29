@@ -15,6 +15,6 @@ namespace CineBase
 
         public string Description { get; set; }
 
-        public Genre Genre { get; set; }
+        public int Genre { get; set; }
     }
 }

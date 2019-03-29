@@ -33,9 +33,19 @@ namespace CineBase.Controllers
             return View();
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(int id)
         {
-            return View();
+            string query = string.Format("SELECT [Id], [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", id);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            PersonViewModel item = new PersonViewModel
+            {
+                Id = reader.GetInt32(0),
+                Firstname = reader.GetString(1),
+                Lastname = reader.GetString(2),
+            };
+            return View(item);
         }
 
         public void _Add(PersonViewModel model)

@@ -16,7 +16,7 @@ namespace CineBase
     {
         public static void Main(string[] args)
         {
-            Database.SetDb(@"Data Source=LUKIN-PC\SqlExpress; Initial Catalog=CineBaseDb; Integrated Security=True; MultipleActiveResultSets=true");    
+            Database.SetDb(@"Data Source=UZIVATEL-PC\SqlExpress; Initial Catalog=CineBaseDb; Integrated Security=True; MultipleActiveResultSets=true");    
             BuildWebHost(args).Run();
         }
 

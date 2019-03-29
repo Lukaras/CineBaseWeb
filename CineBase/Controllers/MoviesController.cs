@@ -51,14 +51,29 @@ namespace CineBase.Controllers
             return View(model);
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(int id)
         {
-            return View();
+            string query = string.Format("SELECT [Id], [Title], [OriginalTitle] FROM [Movie] WHERE [Id] = {0}", id);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            MovieViewModel item = new MovieViewModel
+            {
+                Id = reader.GetInt32(0),
+                Title = reader.GetString(1),
+                OriginalTitle = reader.GetString(2),
+            };
+            return View(item);
         }
 
         public void _Add(MovieViewModel model)
         {
             Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", Database.GetLast("[Movie]") + 1, model.Title, model.OriginalTitle, model.Description, model.Genre));
+        }
+
+        public void _Rate(int movieId, int rating)
+        {
+            Database.Add("[Rating]", "[Id], [MovieId], [UserId], [Rating]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Rating") + 1, movieId, 1, rating));
         }
 
     }

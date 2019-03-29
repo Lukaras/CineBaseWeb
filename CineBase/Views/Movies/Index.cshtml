@@ -2,6 +2,6 @@
 
 @foreach (MovieViewModel m in Model)
 {
-    <p>@Html.Raw(m.Title)</p>
+    <p>@Html.Raw(m.Title)<a href="/Movies/Detail/@m.Id" class="btn btn-success">Zobrazit</a></p>
     <br />
 }

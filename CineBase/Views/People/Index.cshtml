@@ -2,6 +2,6 @@
 
 @foreach (PersonViewModel p in Model)
 {
-    <p>@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)</p>
+    <p>@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)<a href="/People/Detail/@p.Id" class="btn btn-success">Zobrazit</a></p>    
     <br />
 }

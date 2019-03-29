@@ -21,6 +21,5 @@ namespace CineBase
 
 	public string Bio { get; set; }
 
-	public PersonType Type { get; set; }
     }
 }

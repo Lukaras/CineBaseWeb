@@ -38,11 +38,6 @@ namespace CineBase.Controllers
             return list;
         }
 
-        public PartialViewResult Tags()
-        {
-            return PartialView();
-        }
-
         public void _AddItem(ListItem model)
         {
             Database.Add("[List]", "[Id], [Content], [ListType]", string.Format("{0}, '{1}', {2}", Database.GetLast("List") + 1, model.Content, model.Item));
