@@ -29,6 +29,16 @@ namespace CineBase
             }
         }
 
+        public static void Update(string table, string values, string condition)
+        {
+            if (db != null)
+            {
+                string query = string.Format("UPDATE {0} SET {1} WHERE {2}", table, values, condition);
+                SqlCommand cmd = new SqlCommand(query, db);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static int GetLast(string table)
         {
             if (db != null)

@@ -42,8 +42,25 @@
                         <option value="9">9</option>
                         <option value="10">10</option>
                     </select>
-                </div>                
+                    <button class="btn btn-info" onclick="rate()">Hodnotit</button>
+                </div>
+                <div class="row">
+                    @Html.TextArea("comment", new { style = "width: 80%" })
+                    <button class="btn btn-info" onclick="comment()">Odeslat komentář</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+
+    function rate() {
+        $.post("/Movies/_Rate", { movieId: @Model.Id, rating: $("#rating").val(), });
+    }
+
+    function comment() {
+        $.post("/Movies/_Comment", { movieId: @Model.Id, comment: $("#comment").val(), });
+    }
+
+</script>

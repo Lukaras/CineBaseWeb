@@ -29,6 +29,18 @@ namespace CineBase
 
         public List<Person> People { get; set; }
 
+        public List<int> OverheadPeople { get; set; }
+
+        public List<int> ScreenplayPeople { get; set; }
+
+        public List<int> ModelPeople { get; set; }
+
+        public List<int> CameraPeople { get; set; }
+
+        public List<int> SoundPeople { get; set; }
+
+        public List<int> Actors { get; set; }
+
         public float Rating { get; set; }
 
 

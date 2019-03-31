@@ -7,14 +7,18 @@ namespace CineBase
 {
     public enum PersonType
     {
-	Undefined = 0,
+	    Undefined = 0,
 
-	Actor = 1,
+	    Actor = 1,
 
-	Director = 2,
+	    Overhead = 2,
 
-	Scenarist = 3,
+	    Scenarist = 3,
 
-	Cameraman = 4
+	    Cameraman = 4,
+
+        Sound = 5,
+
+        Model = 6,
     }
 }

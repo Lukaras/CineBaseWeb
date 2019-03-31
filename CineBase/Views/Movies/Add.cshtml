@@ -14,6 +14,84 @@
                     @Html.ValidationMessageFor(x => x.OriginalTitle)
                 </div>
                 <div class="row">
+                    <div class="overhead">
+                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.OverheadPeople)</span>
+                        <select class="overheadP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('overhead')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <div class="model">
+                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.ModelPeople)</span>
+                        <select class="modelP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('model')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.ScreenplayPeople)</span>
+                    <div class="screenplay">
+                        <select class="screenplayP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('screenplay')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.CameraPeople)</span>
+                    <div class="camera">
+                        <select class="cameraP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('camera')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.SoundPeople)</span>
+                    <div class="sound">
+                        <select class="soundP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('sound')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Actors)</span>
+                    <div class="actors">
+                        <select class="actorsP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('actors')">+Přidat</a>
+                </div>
+                <div class="row">
                     <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
                     @Html.EditorFor(x => x.Description)
                     @Html.ValidationMessageFor(x => x.Description)
@@ -37,13 +115,62 @@
 </div>
 
 <script>
+
     function addMovie() {
+        var overhead = [];
+        $(".overheadP").each(function () {
+            if ($(this).val() != 0) {
+                overhead.push($(this).val());
+            }
+        });
+        var models = [];
+        $(".modelP").each(function () {
+            if ($(this).val() != 0) {
+                models.push($(this).val());
+            }
+        });
+        var screenplay = [];
+        $(".screenplayP").each(function () {
+            if ($(this).val() != 0) {
+                screenplay.push($(this).val());
+            }
+        });
+        var camera = [];
+        $(".cameraP").each(function () {
+            if ($(this).val() != 0) {
+                camera.push($(this).val());
+            }
+        });
+        var sound = [];
+        $(".soundP").each(function () {
+            if ($(this).val() != 0) {
+                sound.push($(this).val());
+            }
+        });
+        var actors = [];
+        $(".actorsP").each(function () {
+            if ($(this).val() != 0) {
+                actors.push($(this).val());
+            }
+        });
+                   
         var model = {
             title: $("#Title").val(),
             originalTitle: $("#OriginalTitle").val(),
             description: $("#Description").val(),
-            genre: $("#Genre").val()
+            genre: $("#Genre").val(),
+            overheadPeople: overhead,
+            modelPeople: models,
+            screenplayPeople: screenplay,
+            cameraPeople: camera,
+            soundPeople: sound,
+            actors: actors,
         };
         $.post("/Movies/_Add", model);
     }
+
+    function addPerson(cls) {
+        $("."+ cls + "P:last").clone().appendTo("." + cls);
+    }
+
 </script>
