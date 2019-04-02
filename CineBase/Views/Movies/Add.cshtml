@@ -1,6 +1,7 @@
 ﻿@model MovieViewModel
 <div id="add-form" class="panel panel-default view-area">
     <div class="col-lg-12 col-md-12 col-xs-12">
+        <h2>Přidat film</h2>
         <div class="row">
             <div class="form-area">
                 <div class="row">
@@ -100,11 +101,6 @@
                     <span class="col-md-2 control-label">@Html.LabelFor(x => x.Genre)</span>
                     @Html.DropDownList("Genre", new SelectList(Model.Genres, "Id", "Content"))
                     @Html.ValidationMessageFor(x => x.Genre)
-                </div>
-                <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Tags)</span>
-                    @Html.EditorFor(x => x.Tags)
-                    @Html.ValidationMessageFor(x => x.Tags)
                 </div>
             </div>
         </div>
