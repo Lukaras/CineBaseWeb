@@ -6,3 +6,10 @@
 <h2>Login</h2>
 @Html.EditorFor(x => x.Username)
 @Html.EditorFor(x => x.Password)
+<button class="btn btn-info" onclick="login()">Login</button>
+
+<script>
+    function login() {
+        $.post("/User/_Login", { model: { username: $("#Username").val(), password: $("#Password").val() } });
+    }
+</script>
