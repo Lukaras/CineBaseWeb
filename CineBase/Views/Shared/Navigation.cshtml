@@ -1,5 +1,7 @@
 ﻿
 
+<body onload="load()">
+</body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -16,38 +18,90 @@
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle"> Filmy <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
+                        <li class="adm"><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
                         <li><a asp-area="" asp-controller="Movies" asp-action="Index">Seznam</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle"> Osobnosti <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a asp-area="" asp-controller="People" asp-action="Add">Přidat</a></li>
+                        <li class="adm"><a asp-area="" asp-controller="People" asp-action="Add">Přidat</a></li>
                         <li><a asp-area="" asp-controller="People" asp-action="Index">Seznam</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle"> Žebříčky <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
+                        <li class="adm"><a asp-area="" asp-controller="Movies" asp-action="Add">Přidat</a></li>
                         <li><a asp-area="" asp-controller="Movies" asp-action="Index">Seznam</a></li>
                     </ul>
                 </li>
+                <li class="adm"><a asp-area="" asp-controller="List" asp-action="Index">Žánry</a></li>
             </ul>
-            @*if (Model == null)
-        {*@
-            <ul class="nav navbar-nav navbar-right">
+
+            <ul class="nav navbar-nav navbar-right usrN">
                 <li><a asp-area="" asp-controller="User" asp-action="Register">Registrovat</a></li>
                 <li><a asp-area="" asp-controller="User" asp-action="Login">Přihlásit</a></li>
             </ul>
-            @*}
-            else
-            {
-            <div class="nav navbar-nav navbar-right">
-                <a asp-area="" asp-controller="User" asp-action="Detail/@Model.Id">@Model.Username</a>
+
+            <div class="navbar-collapse collapse usr">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown usr">
+                        <a data-toggle="dropdown" class="dropdown-toggle" id="usr"><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="dtl"></a></li>
+                            <li><a onclick="logout()">Odhásit</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            }*@
+
         </div>
     </div>
 </nav>
+
+<script>
+    function load() {
+        var x = getCookie("userId");
+        var y = getCookie("userType");
+        var z = getCookie("userName");
+
+        if (x != "") {
+            $(".usrN").hide();
+            $("#usr").append(z);
+            $("#dtl").attr("href", "/User/Detail/" + x);
+            $("#dtl").append("Zobrazit");
+            $(".usr").show();
+        }
+
+        else {
+            $(".usr").hide();
+        }
+
+        if (y < 1) {
+            $(".adm").hide();
+        }
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function logout() {
+        $.post("/User/Logout");
+        location.replace("/");
+    }
+
+</script>

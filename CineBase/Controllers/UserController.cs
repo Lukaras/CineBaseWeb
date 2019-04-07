@@ -49,7 +49,7 @@ namespace CineBase.Controllers
 
             var entity = new User();
 
-            string query = string.Format("SELECT [Id], [Username], [Password], [PasswordSalt] FROM [User] WHERE [Username] = '{0}'", login);
+            string query = string.Format("SELECT [Id], [Username], [Password], [PasswordSalt], [Type] FROM [User] WHERE [Username] = '{0}'", login);
             SqlCommand cmd = new SqlCommand(query, Database.db);
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -57,23 +57,33 @@ namespace CineBase.Controllers
             {
                 Id = reader.GetInt32(0),
                 Username = reader.GetString(1),
-                Password = reader.GetString(2),
+                Password = reader.GetString(2),                
             };
             string salt = reader.GetString(3);
+            int type = reader.GetInt32(4);
 
             if (entity == null) return "Uživatel neexistuje.";
 
             var encrypted = Helper.Hashing(password + salt);
-            encrypted = encrypted.Replace('�', '?');
             if (entity.Password == encrypted)
             {
 
-                var expire = DateTime.Now.AddMinutes(240);
-
-                Response.Cookies.Append("user", entity.Id.ToString());
+                var hash = Helper.Hashing(entity.Username);
+                Response.Cookies.Append("userId", entity.Id.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddHours(2) });
+                Response.Cookies.Append("userType", type.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddHours(2) });
+                Response.Cookies.Append("userName", entity.Username, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddHours(2) });
+                Response.Cookies.Append("hash", hash, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddHours(2) });
                 return "ok";
             }
             return "Přihlašovací údaje nejsou správné.";
+        }
+
+        public void Logout()
+        {
+            Response.Cookies.Delete("userId");
+            Response.Cookies.Delete("userType");
+            Response.Cookies.Delete("userName");
+            Response.Cookies.Delete("hash");
         }
     }
 }

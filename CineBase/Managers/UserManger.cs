@@ -11,7 +11,7 @@ namespace CineBase
         {
             string salt = Helper.RandomString(4);
             string hashed = Helper.Hashing(model.Password + salt);
-            Database.Add("[User]", "[Id], [Username], [Password], [PasswordSalt], [Email], [Created], [Type]", string.Format("{0}, '{1}', '{2}', '{3}', '{4}', {5}, {6}", Database.GetLast("User") + 1, model.Username, hashed, salt, model.Email, "null", 2));
+            Database.Add("[User]", "[Id], [Username], [Password], [PasswordSalt], [Email], [Created], [Type]", string.Format("{0}, '{1}', '{2}', '{3}', '{4}', '{5}', {6}", Database.GetLast("User") + 1, model.Username, hashed, salt, model.Email, DateTime.Now.ToString(@"yyyy-MM-dd"), 0));
             return true;
         }
 

@@ -36,7 +36,7 @@ namespace CineBase.Controllers
 
         public ActionResult Navigation()
         {
-            return PartialView();
+            return View();
         }
     }
 }

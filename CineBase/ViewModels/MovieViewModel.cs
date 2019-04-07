@@ -29,8 +29,6 @@ namespace CineBase
 
         public List<int> Tags { get; set; }
 
-        public List<string> Comments { get; set; }
-
         public List<Person> People { get; set; }
 
         [Display(Name = "Režie")]
@@ -54,6 +52,8 @@ namespace CineBase
         [Display(Name = "Hodnocení")]
         public float Rating { get; set; }
 
+        [Display(Name = "Komentáře")]
+        public List<Comment> Comments { get; set; }
 
     }
 }

@@ -13,7 +13,7 @@ namespace CineBase
 
         public static string Hashing(string input)
         {
-            return System.Text.Encoding.UTF8.GetString(SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(input)));
+            return System.Text.Encoding.UTF8.GetString(SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(input))).Replace('�', '?');
         }
 
         public static string RandomString(int length)

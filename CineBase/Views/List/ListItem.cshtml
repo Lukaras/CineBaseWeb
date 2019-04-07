@@ -1,7 +1,7 @@
 ﻿@model List<ListItem>
 
 
-<table>
+<table id="genres">
     @foreach (ListItem i in Model)
     {
     <tr id="row_@Html.Raw(i.Id)">

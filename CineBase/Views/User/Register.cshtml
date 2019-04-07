@@ -5,12 +5,10 @@
 
 <h2>Registrace</h2>
 <div class="form-group">
-    @using (Html.BeginForm("Add", "User"))
-    {
     <div class="row">
         <span class="col-md-2 control-label">@Html.LabelFor(x => x.Username)</span>
         @Html.EditorFor(x => x.Username)
-	@Html.ValidationMessageFor(x => x.Username)
+        @Html.ValidationMessageFor(x => x.Username)
     </div>
     <div class="row">
         <span class="col-md-2 control-label">@Html.LabelFor(x => x.Password)</span>
@@ -18,12 +16,31 @@
         @Html.ValidationMessageFor(x => x.Password)
     </div>
     <div class="row">
-        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Email)</span>
-        @Html.EditorFor(x => x.Email)
-        @Html.ValidationMessageFor(x => x.Email)
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Question)</span>
+        <select id="questionSelect">
+            <option value="1">Můj nejoblíbenější film/seriál?</option>
+            <option value="2">Nejoblíbenější herec//herečka?</option>
+            <option value="3">Rodné příjmení matky?</option>
+            <option value="4">Vysněná destinace pro dovolenou?</option>
+            <option value="5">Jméno prvního mazlíčka?</option>
+            <option value="6">Nejoblíbenější spisovate/spisovatelka?</option>
+        </select> <br />
+        @Html.EditorFor(x => x.Answer)
     </div>
     <div class="row">
-	<button class="btn btn-info" type="submit">Registrovat</button>
+        <button class="btn btn-info" onclick="Add()">Registrovat</button>
     </div>
-    }
 </div>
+
+<script>
+    function Add() {
+        var model = {
+            username: $("#Username").val(),
+            password: $("#Password").val(),
+            question: $("#questionSelect").val(),
+            answer: $("#Answer").val()
+        };
+        $.post("/User/_Add", model);
+
+    }
+</script>

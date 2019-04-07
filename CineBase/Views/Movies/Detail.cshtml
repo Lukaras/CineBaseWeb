@@ -20,7 +20,11 @@
                     @Html.Raw(Model.GenreText)
                     @Html.ValidationMessageFor(x => x.Genre)
                 </div>
-                <div>
+                <div class="row col-xs-12">
+                    <h3><b>Hodnocení:&nbsp;@Model.Rating</b></h3>
+                </div>
+                <div id="ratingDiv">
+                    <b>Přidat hodnocení</b>
                     <select id="rating">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -33,11 +37,34 @@
                         <option value="9">9</option>
                         <option value="10">10</option>
                     </select>
-                    <button class="btn btn-info" onclick="rate()">Hodnotit</button>
+                    <button class="btn btn-info" onclick="rate()" id="rateBtn">Hodnotit</button>
                 </div>
-                <div class="row">
-                    @Html.TextArea("comment", new { style = "width: 80%" })
-                    <button class="btn btn-info" onclick="comment()">Odeslat komentář</button>
+                <div class="row col-xs-12">
+                    <div class="row">
+                        <b class="col-md-2 control-label">Přidat komentář</b> 
+                    </div>
+                    @Html.TextArea("comment", new { style = "width: 80%" }) <br />
+                    <button class="btn btn-info" onclick="comment()" id="commentBtn">Odeslat komentář</button>
+                </div>
+                <div class="row col-xs-12" style="margin-top: 10px">
+                    <div class="row">
+                        <b class="col-md-2 control-label">Komentáře</b>
+                    </div>
+                    @foreach (Comment c in Model.Comments)
+                    {
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 col-xs-12" style="border: 1px solid black">
+                            <div class="row">
+                                <a class="pull-right" href="/User/Detail/@Html.Raw(c.UserId.ToString())">@Html.Raw(c.UserName)</a>
+                            </div>
+                            <div class="row" style="border: 1px solid black">
+                                <p>@c.Content</p>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -46,12 +73,29 @@
 
 <script>
 
+
+    window.addEventListener('load', (event) => {
+        loadInt();
+    });
+
     function rate() {
         $.post("/Movies/_Rate", { movieId: @Model.Id, rating: $("#rating").val(), });
     }
 
     function comment() {
         $.post("/Movies/_Comment", { movieId: @Model.Id, comment: $("#comment").val(), });
+        location.reload();
+    }
+
+    function loadInt() {
+        if (getCookie("userId") == "") {
+            $("#rateBtn").attr("disabled", "true");
+            $("#ratingDiv").append("Hodnotit mohou pouze přilášení uživatelé!");
+            $("#comment").append("Přidávat komentáře mouhou pouze přihlášení uživatelé!");
+            $("#comment").attr("disabled", "true");
+            $("#commentBtn").attr("disabled", "true");
+        }
+
     }
 
 </script>

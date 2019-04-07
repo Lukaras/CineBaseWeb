@@ -1,7 +1,14 @@
 ﻿@model List<PersonViewModel>
 
-@foreach (PersonViewModel p in Model)
-{
-    <p>@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)<a href="/People/Detail/@p.Id" class="btn btn-success">Zobrazit</a></p>    
-    <br />
-}
+<div class="col-xs-12" style="min-height: 550px">
+    <h2>Seznam osob v databázi</h2>
+    <table>
+        @foreach (PersonViewModel p in Model)
+        {
+            <tr>
+                <td class="col-md-12 col-xs-3">@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)</td>
+                <td class="col-md-12 col-xs-3"><a href="/People/Detail/@p.Id" class="btn btn-success">Zobrazit</a></td>
+            </tr>
+        }
+    </table>
+</div>

@@ -12,7 +12,7 @@ namespace CineBase.Controllers
         public ActionResult Index()
         {
             List<MovieViewModel> list = new List<MovieViewModel>();
-            string query = string.Format("SELECT [Id], [Title], [OriginalTitle] FROM [Movie]");
+            string query = string.Format("SELECT [Id], [Title], [OriginalTitle], [Genre] FROM [Movie]");
             SqlCommand cmd = new SqlCommand(query, Database.db);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -22,8 +22,17 @@ namespace CineBase.Controllers
                     Id = reader.GetInt32(0),
                     Title = reader.GetString(1),
                     OriginalTitle = reader.GetString(2),
+                    Genre = reader.GetInt32(3),
                 };
                 list.Add(item);
+            }
+            foreach (MovieViewModel item in list)
+            {
+                query = string.Format("SELECT [Content] FROM [List] WHERE [Id] = {0}", item.Genre);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                item.GenreText = reader.GetString(0);
             }
             return View(list);
         }
@@ -151,6 +160,39 @@ namespace CineBase.Controllers
             item.CameraPeople = camera;
             item.SoundPeople = sound;
             item.Actors = actors;
+            List<Comment> comments = new List<Comment>();
+            query = string.Format("SELECT [UserId], [Comment] FROM [Comment] WHERE [MovieId] = {0}", id);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string userQuery = string.Format("SELECT [Username] FROM [User] WHERE [Id] = {0}", reader.GetInt32(0));
+                SqlCommand newCmd = new SqlCommand(query, Database.db);                
+                comments.Add(new Comment
+                {
+                    UserId = reader.GetInt32(0),
+                    Content = reader.GetString(1)
+                });
+            }
+            for (int i = 0; i < comments.Count; i++)
+            {
+                int uId = comments[i].UserId;
+                query = string.Format("SELECT [Username] FROM [User] WHERE [Id] = {0}", uId);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                comments[i].UserName = reader.GetString(0);
+            }
+            item.Comments = comments;
+            List<int> ratings = new List<int>();
+            query = string.Format("SELECT [Rating] FROM [Rating] WHERE [MovieId] = {0}", id);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ratings.Add(reader.GetInt32(0));
+            }
+            item.Rating = (float)ratings.Average();
             return View(item);
         }
 
@@ -175,7 +217,7 @@ namespace CineBase.Controllers
 
         public void _Rate(int movieId, int rating)
         {
-            string query = string.Format("SELECT [Id] FROM [Rating] WHERE [MovieId] = {0} AND [UserId] = {1}", movieId, 1);
+            string query = string.Format("SELECT [Id] FROM [Rating] WHERE [MovieId] = {0} AND [UserId] = {1}", movieId, Request.Cookies["userId"]);
             SqlCommand cmd = new SqlCommand(query, Database.db);
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -185,13 +227,14 @@ namespace CineBase.Controllers
                 Database.Update("[Rating]", string.Format("[Rating] = {0}", rating), string.Format("[Id] = {0}", id));
                 return;
             }
-            Database.Add("[Rating]", "[Id], [MovieId], [UserId], [Rating]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Rating") + 1, movieId, 1, rating));
+            var userId = Request.Cookies["userId"];
+            Database.Add("[Rating]", "[Id], [MovieId], [UserId], [Rating]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Rating") + 1, movieId, Request.Cookies["userId"], rating));
         }
 
 
         public void _Comment(int movieId, string comment)
         {
-            Database.Add("[Comment]", "[Id], [UserId], [MovieId], [Comment]", string.Format("{0}, {1}, {2}, '{3}'", Database.GetLast("Comment") + 1, 1, movieId, comment));
+            Database.Add("[Comment]", "[Id], [UserId], [MovieId], [Comment]", string.Format("{0}, {1}, {2}, '{3}'", Database.GetLast("Comment") + 1, Request.Cookies["userId"], movieId, comment));
         }
     }
 }
