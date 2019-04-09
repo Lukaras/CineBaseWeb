@@ -1,0 +1,71 @@
+﻿@model UserDetailsViewModel
+
+@Html.HiddenFor(x => x.Id)
+<div class="col-xs-12" style="min-height: 550px">
+    <h2>@Model.Username</h2>
+    <div class="col-lg-5">
+        <div class="col-xs-12">
+            <h4>Informace</h4>
+            <b>Založeno</b>
+            @Html.Raw(Model.Created.ToShortDateString())
+            <br />
+            <b>Počet komentářů</b>
+            @Html.Raw(Model.Comments)<br />
+            <b>Typ uživatele</b>
+            @Html.Raw(Model.TypeText)&nbsp;<button id="promote" class="btn-sm btn-info" onclick="promote()">Změnit na moderátora</button>
+            <hr />
+            <div class="row col-xs-12" id="pass">
+                <h4>Změna hesla</h4>
+                <b>Nové heslo</b>
+                @Html.EditorFor(x => x.Password)<br />
+                <button class="btn btn-info" onclick="changePass()">Potvrdit</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <h4>Hodnocení</h4>
+        <ul class="list-group">
+            @for (int i = 10; i > 0; i--)
+            {
+                @foreach (Rating r in Model.Ratings)
+                {
+                    if (r.Value == i)
+                    {
+                        <li class="list-group-item" style="background: rgb(@(180 - (i * 18) + 50),@(i * 18 + 50), 50); text-align: center">
+                            <button class="btn-md btn-info" onclick="location.replace('/Movies/Detail/@r.MovieId')">@r.MovieName</button><span class="badge alert-info">@i</span>
+                        </li>
+                    }
+
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    window.addEventListener('load', (event) => {
+        showPass();
+    });
+
+    function showPass() {
+
+        if (getCookie("userId") != '@Model.Id') {
+            $("#pass").hide();
+        }
+        if (!(parseInt(getCookie("userType")) > 0 && @Model.Type == 0)) {
+            $("#promote").hide();
+        } 
+    }
+
+    function changePass() {
+        $.post("/User/ChangePass", { newPass: $("#Password").val(), uId: @Model.Id});
+        setTimeout(location.reload(), 1000);
+    }
+
+    function promote() {
+        $.post("/User/Promote", { uId: @Model.Id});
+        setTimeout(location.reload(), 1500);
+    }
+
+</script>

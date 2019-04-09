@@ -4,7 +4,7 @@
 }
 
 <h2>Registrace</h2>
-<div class="form-group">
+<div class="form-group col-xs-12">
     <div class="row">
         <span class="col-md-2 control-label">@Html.LabelFor(x => x.Username)</span>
         @Html.EditorFor(x => x.Username)
@@ -27,20 +27,32 @@
         </select> <br />
         @Html.EditorFor(x => x.Answer)
     </div>
+    <div class="respDiv">
+        <p id="resp"></p>
+    </div>    
     <div class="row">
         <button class="btn btn-info" onclick="Add()">Registrovat</button>
     </div>
 </div>
 
 <script>
-    function Add() {
+
+    function Add() {        
         var model = {
             username: $("#Username").val(),
             password: $("#Password").val(),
             question: $("#questionSelect").val(),
             answer: $("#Answer").val()
         };
-        $.post("/User/_Add", model);
-
+        $.post("/User/UsernameCheck", { username: model.username }, function (response) {
+            if (response != "ok") {
+                $("#resp").remove();
+                $(".respDiv").append("<p id='resp'>" + response + "</p>");
+            }
+            else {
+                $.post("/User/Add", model);
+            }
+        });       
     }
+
 </script>

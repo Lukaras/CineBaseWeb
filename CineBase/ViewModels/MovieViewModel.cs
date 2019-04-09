@@ -8,6 +8,17 @@ namespace CineBase
 {
     public class MovieViewModel
     {
+
+        public MovieViewModel()
+        {
+            OverheadPeople = new List<int>();
+            ModelPeople = new List<int>();
+            ScreenplayPeople = new List<int>();
+            SoundPeople = new List<int>();
+            CameraPeople = new List<int>();
+            Actors = new List<int>();
+        }
+
         public int Id { get; set; }
 
         [Display(Name = "Název")]
@@ -48,6 +59,24 @@ namespace CineBase
 
         [Display(Name = "Herci")]
         public List<int> Actors { get; set; }
+
+        [Display(Name = "Režie")]
+        public List<PersonViewModel> DetailOverheadPeople { get; set; }
+
+        [Display(Name = "Scénář")]
+        public List<PersonViewModel> DetailScreenplayPeople { get; set; }
+
+        [Display(Name = "Předloha")]
+        public List<PersonViewModel> DetailModelPeople { get; set; }
+
+        [Display(Name = "Kamera")]
+        public List<PersonViewModel> DetailCameraPeople { get; set; }
+
+        [Display(Name = "Audio")]
+        public List<PersonViewModel> DetailSoundPeople { get; set; }
+
+        [Display(Name = "Herci")]
+        public List<PersonViewModel> DetailActors { get; set; }
 
         [Display(Name = "Hodnocení")]
         public float Rating { get; set; }

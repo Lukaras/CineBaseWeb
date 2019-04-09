@@ -4,21 +4,63 @@
     <div class="col-lg-12 col-md-12 col-xs-12">
         <div class="row">
             <div class="form-area">
-                <h2>@Html.Raw(Model.Title)</h2>
+                <h2>@Html.Raw(Model.Title)&nbsp;<button class="btn-sm btn-info" id="edit" onclick="location.replace('/Movies/Edit/@Model.Id')" style="display:none">Upravit</button></h2>
                 <div class="row">
                     <span class="col-md-2 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
                     @Html.Raw(Model.OriginalTitle)
                     @Html.ValidationMessageFor(x => x.OriginalTitle)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
-                    @Html.Raw(Model.Description)
-                    @Html.ValidationMessageFor(x => x.Description)
-                </div>
-                <div class="row">
                     <span class="col-md-2 control-label">@Html.LabelFor(x => x.Genre)</span>
                     @Html.Raw(Model.GenreText)
                     @Html.ValidationMessageFor(x => x.Genre)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.OverheadPeople)</span>
+                    @foreach (PersonViewModel p in Model.DetailOverheadPeople)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.ModelPeople)</span>
+                    @foreach (PersonViewModel p in Model.DetailModelPeople)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.ScreenplayPeople)</span>
+                    @foreach (PersonViewModel p in Model.DetailScreenplayPeople)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.SoundPeople)</span>
+                    @foreach (PersonViewModel p in Model.DetailSoundPeople)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.CameraPeople)</span>
+                    @foreach (PersonViewModel p in Model.DetailCameraPeople)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Actors)</span>
+                    @foreach (PersonViewModel p in Model.DetailActors)
+                    {
+                        <a href="/People/Detail/@p.Id">@Html.Raw(p.Firstname + " " + p.Lastname)</a>
+                    }
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
+                    <p>@Html.Raw(Model.Description)</p>
+                    @Html.ValidationMessageFor(x => x.Description)
                 </div>
                 <div class="row col-xs-12">
                     <h3><b>Hodnocení:&nbsp;@Model.Rating</b></h3>
@@ -41,7 +83,7 @@
                 </div>
                 <div class="row col-xs-12">
                     <div class="row">
-                        <b class="col-md-2 control-label">Přidat komentář</b> 
+                        <b class="col-md-2 control-label">Přidat komentář</b>
                     </div>
                     @Html.TextArea("comment", new { style = "width: 80%" }) <br />
                     <button class="btn btn-info" onclick="comment()" id="commentBtn">Odeslat komentář</button>
@@ -52,18 +94,18 @@
                     </div>
                     @foreach (Comment c in Model.Comments)
                     {
-                    <div class="row" style="margin-bottom: 5px">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10 col-xs-12" style="border: 1px solid black">
-                            <div class="row">
-                                <a class="pull-right" href="/User/Detail/@Html.Raw(c.UserId.ToString())">@Html.Raw(c.UserName)</a>
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10 col-xs-12" style="border: 1px solid black">
+                                <div class="row">
+                                    <a class="pull-right" href="/User/Detail/@Html.Raw(c.UserId.ToString())">@Html.Raw(c.UserName)</a>
+                                </div>
+                                <div class="row" style="border: 1px solid black">
+                                    <p>@c.Content</p>
+                                </div>
                             </div>
-                            <div class="row" style="border: 1px solid black">
-                                <p>@c.Content</p>
-                            </div>
+                            <div class="col-md-1"></div>
                         </div>
-                        <div class="col-md-1"></div>
-                    </div>
                     }
                 </div>
             </div>
@@ -94,6 +136,9 @@
             $("#comment").append("Přidávat komentáře mouhou pouze přihlášení uživatelé!");
             $("#comment").attr("disabled", "true");
             $("#commentBtn").attr("disabled", "true");
+        }
+        if (parseInt(getCookie("userType")) > 0) {
+            $("#edit").show();
         }
 
     }

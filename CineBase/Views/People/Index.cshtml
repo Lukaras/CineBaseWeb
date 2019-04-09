@@ -6,8 +6,8 @@
         @foreach (PersonViewModel p in Model)
         {
             <tr>
-                <td class="col-md-12 col-xs-3">@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)</td>
-                <td class="col-md-12 col-xs-3"><a href="/People/Detail/@p.Id" class="btn btn-success">Zobrazit</a></td>
+                <td class="col-md-3 col-xs-3">@Html.Raw(p.Firstname)&nbsp;@Html.Raw(p.Lastname)</td>
+                <td class="col-md-3 col-xs-3"><a href="/People/Detail/@p.Id" class="btn btn-success">Zobrazit</a></td>
             </tr>
         }
     </table>

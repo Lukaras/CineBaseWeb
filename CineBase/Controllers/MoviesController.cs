@@ -92,74 +92,138 @@ namespace CineBase.Controllers
             reader = cmd.ExecuteReader();
             reader.Read();
             item.GenreText = reader.GetString(0);
-            List<Person> people = new List<Person>();
-            query = string.Format("SELECT [Id], [Firstname], [Lastname] FROM [Person]");
-            cmd = new SqlCommand(query, Database.db);
-            reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Person entity = new Person
-                {
-                    Id = reader.GetInt32(0),
-                    Name = reader.GetString(1) + " " + reader.GetString(2)
-                };
-                people.Add(entity);
-            }
-            item.People = people;
-            List<int> overhead = new List<int>();
+            List<PersonViewModel> overhead = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Overhead);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                overhead.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                overhead.Add(person);
             }
-            item.OverheadPeople = overhead;
-            List<int> model = new List<int>();
+            List<PersonViewModel> modelPeople = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Model);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                model.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                modelPeople.Add(person);
             }
-            item.ModelPeople = overhead;
-            List<int> screenplay = new List<int>();
+            List<PersonViewModel> screenplay = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Scenarist);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                screenplay.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                screenplay.Add(person);
             }
-            item.ScreenplayPeople = screenplay;
-            List<int> camera = new List<int>();
+            List<PersonViewModel> camera = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Cameraman);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                camera.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                camera.Add(person);
             }
-            List<int> sound = new List<int>();
+            List<PersonViewModel> sound = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Sound);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                sound.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                sound.Add(person);
             }
-            List<int> actors = new List<int>();
+            List<PersonViewModel> actors = new List<PersonViewModel>();
             query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", id, (int)PersonType.Actor);
             cmd = new SqlCommand(query, Database.db);
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                actors.Add(reader.GetInt32(0));
+                PersonViewModel person = new PersonViewModel
+                {
+                    Id = reader.GetInt32(0),
+                };
+                actors.Add(person);
             }
-            item.CameraPeople = camera;
-            item.SoundPeople = sound;
-            item.Actors = actors;
+            foreach (PersonViewModel p in modelPeople)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            foreach (PersonViewModel p in overhead)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            foreach (PersonViewModel p in screenplay)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            foreach (PersonViewModel p in camera)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            foreach (PersonViewModel p in sound)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            foreach (PersonViewModel p in actors)
+            {
+                query = string.Format("SELECT [Firstname], [Lastname] FROM [Person] WHERE [Id] = {0}", p.Id);
+                cmd = new SqlCommand(query, Database.db);
+                reader = cmd.ExecuteReader();
+                reader.Read();
+                p.Firstname = reader.GetString(0);
+                p.Lastname = reader.GetString(1);
+            }
+            item.DetailModelPeople = modelPeople;
+            item.DetailOverheadPeople = overhead;
+            item.DetailScreenplayPeople = screenplay;
+            item.DetailCameraPeople = camera;
+            item.DetailSoundPeople = sound;
+            item.DetailActors = actors;
             List<Comment> comments = new List<Comment>();
             query = string.Format("SELECT [UserId], [Comment] FROM [Comment] WHERE [MovieId] = {0}", id);
             cmd = new SqlCommand(query, Database.db);
@@ -192,13 +256,14 @@ namespace CineBase.Controllers
             {
                 ratings.Add(reader.GetInt32(0));
             }
-            item.Rating = (float)ratings.Average();
+            if (ratings.Count > 0)
+                item.Rating = (float)ratings.Average();
             return View(item);
         }
 
         public void _Add(MovieViewModel model)
         {
-            int id = Database.GetLast("[Movie]") + 1;
+            int id = Database.GetLast("Movie") + 1;           
             foreach (int i in model.OverheadPeople)
                 Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, id, i, (int)PersonType.Overhead));
             foreach (int i in model.ModelPeople)

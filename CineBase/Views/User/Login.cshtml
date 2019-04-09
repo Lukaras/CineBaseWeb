@@ -3,14 +3,33 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
-@Html.EditorFor(x => x.Username)
-@Html.EditorFor(x => x.Password)
-<button class="btn btn-info" onclick="login()">Login</button>
+<h2>Přihlášení</h2>
+<div id="form" class="form-group col-xs-12">
+    <div class="row">
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Username)</span>
+        @Html.EditorFor(x => x.Username)
+        @Html.ValidationMessageFor(x => x.Username)
+    </div>
+    <div class="row">
+        <span class="col-md-2 control-label">@Html.LabelFor(x => x.Password)</span>
+        @Html.EditorFor(x => x.Password)
+        @Html.ValidationMessageFor(x => x.Password)
+    </div>
+    <button class="btn btn-info" onclick="login()">Login</button>
+    <a href="/User/ForgottenPassword">Zapomenuté heslo</a>
+    <p id="msg"></p>
+</div>
 
 <script>
     function login() {
-        $.post("/User/_Login", { model: { username: $("#Username").val(), password: $("#Password").val() } });
-        location.replace("/");
+        $.post("/User/_Login", { model: { username: $("#Username").val(), password: $("#Password").val() } }, function (response) {
+            if (response == "ok") {
+                setTimeout(function () { location.replace("/"); }, 1000);
+            }
+            else {
+                $("#msg").remove();
+                $("#form").append("<p id='msg'>" + response + "</p>")
+            }
+        });        
     }
 </script>
