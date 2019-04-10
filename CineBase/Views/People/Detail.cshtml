@@ -1,7 +1,7 @@
 ﻿@model PersonViewModel
 
 <div class="col-xs-12">
-    <h2>@Html.Raw(Model.Firstname)&nbsp;@Html.Raw(Model.Lastname)&nbsp;<button class="btn-sm btn-info" id="edit" onclick="location.replace('/People/Edit/@Model.Id')" style="display:none">Upravit</button></h2>
+    <h2>@Html.Raw(Model.Firstname)&nbsp;@Html.Raw(Model.Lastname)&nbsp;<button class="btn-sm btn-info" id="edit" onclick="location.replace('/People/Edit/@Model.Id')" style="display:none">Upravit</button><button class="btn-sm btn-danger" id="del" onclick="deleteFunc()" style="display:none">Smazat</button></h2>
     <div class="row col-xs-12">
         <div class="row">
             <span class="col-md-2 control-label">@Html.LabelFor(x => x.Birthdate)</span>
@@ -95,6 +95,15 @@
     window.addEventListener('load', (event) => {
         if (parseInt(getCookie("userType")) > 0) {
             $("#edit").show();
+            $("#del").show();
         }
     });
+
+    function deleteFunc() {
+        if (confirm("Opravdu chcete smazat osobnost?")) {
+            $.post('/People/_Delete', { id: @Model.Id });
+            setTimeout(location.replace("/People"), 500);
+        }
+
+    }
 </script>

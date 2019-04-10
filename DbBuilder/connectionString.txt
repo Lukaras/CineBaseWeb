@@ -1,0 +1,1 @@
+Data Source=LUKIN-PC\SqlExpress;Initial Catalog=Testing;Integrated Security=True;MultipleActiveResultSets=true

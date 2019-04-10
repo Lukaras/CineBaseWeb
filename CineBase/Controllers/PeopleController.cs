@@ -131,9 +131,10 @@ namespace CineBase.Controllers
             return View(item);
         }
 
-        public void _Add(PersonViewModel model)
+        public string _Add(PersonViewModel model)
         {
             Database.Add("[Person]", "[Id], [Firstname], [Lastname], [Birthdate], [Deathdate], [Birthplace], [Bio]", string.Format("{0}, '{1}', '{2}', {3}, {4}, '{5}', '{6}'", Database.GetLast("Person") + 1, model.Firstname, model.Lastname, (model.Birthdate.HasValue) ? "'" + model.Birthdate.Value.ToString(@"yyyy-MM-dd") + "'" : "null", (model.Deathdate.HasValue) ? "'" + model.Deathdate.Value.ToString(@"yyyy-MM-dd") + "'" : "null", model.Birthplace, model.Bio));
+            return "ok";
         }
 
         public ActionResult Edit(int id)
@@ -164,6 +165,16 @@ namespace CineBase.Controllers
         public void _Edit(PersonViewModel model)
         {
             Database.Update("[Person]", string.Format("[Firstname] = '{0}', [Lastname] = '{1}', [Birthdate] = {2}, [Deathdate] = {3}, [Birthplace] = '{4}', [Bio] = '{5}'", model.Firstname, model.Lastname, (model.Birthdate.HasValue) ? "'" + model.Birthdate.Value.ToString(@"yyyy-MM-dd") + "'" : "null", (model.Deathdate.HasValue) ? "'" + model.Deathdate.Value.ToString(@"yyyy-MM-dd") + "'" : "null", model.Birthplace, model.Bio), $"[Id] = {model.Id}");
+        }
+
+        public void _Delete(int id)
+        {
+            string query = string.Format("DELETE FROM [Person] WHERE [Id] = {0}", id);            
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            cmd.ExecuteNonQuery();
+            query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0}", id);
+            cmd = new SqlCommand(query, Database.db);
+            cmd.ExecuteNonQuery();
         }
     }
 }

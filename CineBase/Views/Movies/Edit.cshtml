@@ -1,4 +1,304 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MovieViewModel
+
+@Html.HiddenFor(x => x.Id)
+<div id="add-form" class="panel panel-default view-area">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <h2>Upravit film</h2>
+        <div class="row">
+            <div class="form-area">
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Title)</span>
+                    @Html.EditorFor(x => x.Title)
+                    @Html.ValidationMessageFor(x => x.Title)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
+                    @Html.EditorFor(x => x.OriginalTitle)
+                    @Html.ValidationMessageFor(x => x.OriginalTitle)
+                </div>
+                <div class="row">
+                    <div class="overhead">
+                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.OverheadPeople)</span>
+                        @foreach (PersonViewModel p in Model.DetailOverheadPeople)
+                        {
+                            <select class="overheadP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="overheadP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('overhead')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <div class="model">
+                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.ModelPeople)</span>
+                        @foreach (PersonViewModel p in Model.DetailModelPeople)
+                        {
+                            <select class="modelP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="modelP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('model')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.ScreenplayPeople)</span>
+                    <div class="screenplay">
+                        @foreach (PersonViewModel p in Model.DetailScreenplayPeople)
+                        {
+                            <select class="screenplayP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="screenplayP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('screenplay')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.CameraPeople)</span>
+                    <div class="camera">
+                        @foreach (PersonViewModel p in Model.DetailCameraPeople)
+                        {
+                            <select class="cameraP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="cameraP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('camera')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.SoundPeople)</span>
+                    <div class="sound">
+                        @foreach (PersonViewModel p in Model.DetailSoundPeople)
+                        {
+                            <select class="soundP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="soundP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('sound')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Actors)</span>
+                    <div class="actors">
+                        @foreach (PersonViewModel p in Model.DetailActors)
+                        {
+                            <select class="actorsP">
+                                <option value="0">Vyberte osobu</option>
+                                @foreach (Person pr in Model.People)
+                                {
+                                    if (p.Id == pr.Id)
+                                    {
+                                        <option selected="selected" value="@pr.Id">@pr.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pr.Id">@pr.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                        }
+                        <select class="actorsP">
+                            <option value="0">Vyberte osobu</option>
+                            @foreach (Person p in Model.People)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <a onclick="addPerson('actors')">+Přidat</a>
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
+                    @Html.EditorFor(x => x.Description)
+                    @Html.ValidationMessageFor(x => x.Description)
+                </div>
+                <div class="row">
+                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Genre)</span>
+                    @Html.DropDownList("Genre", new SelectList(Model.Genres, "Id", "Content"))
+                    @Html.ValidationMessageFor(x => x.Genre)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-info" onclick="addMovie()">Přidat</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function addMovie() {
+        var overhead = [];
+        $(".overheadP").each(function () {
+            if ($(this).val() != 0) {
+                overhead.push($(this).val());
+            }
+        });
+        var models = [];
+        $(".modelP").each(function () {
+            if ($(this).val() != 0) {
+                models.push($(this).val());
+            }
+        });
+        var screenplay = [];
+        $(".screenplayP").each(function () {
+            if ($(this).val() != 0) {
+                screenplay.push($(this).val());
+            }
+        });
+        var camera = [];
+        $(".cameraP").each(function () {
+            if ($(this).val() != 0) {
+                camera.push($(this).val());
+            }
+        });
+        var sound = [];
+        $(".soundP").each(function () {
+            if ($(this).val() != 0) {
+                sound.push($(this).val());
+            }
+        });
+        var actors = [];
+        $(".actorsP").each(function () {
+            if ($(this).val() != 0) {
+                actors.push($(this).val());
+            }
+        });
+
+        var model = {
+            id: @Model.Id,
+            title: $("#Title").val(),
+            originalTitle: $("#OriginalTitle").val(),
+            description: $("#Description").val(),
+            genre: $("#Genre").val(),
+            overheadPeople: overhead,
+            modelPeople: models,
+            screenplayPeople: screenplay,
+            cameraPeople: camera,
+            soundPeople: sound,
+            actors: actors,
+        };
+        $.post("/Movies/_Edit", model, function (response) {
+            if (response == "ok") {
+                setTimeout(location.replace("/Movies/Detail/@Model.Id"), 500);
+
+            }
+            else
+                alert("Při zpacovávání došlo k chybě.")
+        });
+    }
+
+    function addPerson(cls) {
+        $("."+ cls + "P:last").clone().appendTo("." + cls);
+    }
+
+    window.addEventListener('load', (event) => {
+        loader();
+    });
+
+    function loader() {
+        $("#Genre").val('@Model.Genre');
+    }
+
+</script>

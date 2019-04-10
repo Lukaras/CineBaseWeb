@@ -11,9 +11,41 @@ namespace CineBase.Controllers
     {
         UserManger manager = new UserManger();
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return View();
+            List<UserDetailsViewModel> list = new List<UserDetailsViewModel>();
+            string query = string.Format("SELECT [Id], [Username], [Type] FROM [User]");
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                UserDetailsViewModel item = new UserDetailsViewModel
+                {
+                    Id = reader.GetInt32(0),
+                    Username = reader.GetString(1),
+                    Type = reader.GetInt32(2),
+                };
+                list.Add(item);
+            }
+            foreach (UserDetailsViewModel item in list)
+            {
+                switch (item.Type)
+                {
+                    default:
+                        item.TypeText = "Nedefinováno";
+                        break;
+                    case 0:
+                        item.TypeText = "Uživatel";
+                        break;
+                    case 1:
+                        item.TypeText = "Moderátor";
+                        break;
+                    case 2:
+                        item.TypeText = "Administrátor";
+                        break;
+                }
+            }
+            return View(list);
         }
 
         public ViewResult Register()
@@ -73,7 +105,7 @@ namespace CineBase.Controllers
                 }
                 return "Přihlašovací údaje nejsou správné.";
             }
-            return "Uživatel neexistuje.";            
+            return "Uživatel neexistuje.";
         }
 
         public void Logout()

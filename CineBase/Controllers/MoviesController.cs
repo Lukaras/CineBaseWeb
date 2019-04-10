@@ -75,6 +75,16 @@ namespace CineBase.Controllers
 
         public ActionResult Detail(int id)
         {
+            return View(Get(id));
+        }
+
+        public ActionResult Edit(int id)
+        {
+            return View(Get(id));
+        }
+
+        public MovieViewModel Get(int id)
+        {
             string query = string.Format("SELECT [Id], [Title], [OriginalTitle], [Description], [Genre] FROM [Movie] WHERE [Id] = {0}", id);
             SqlCommand cmd = new SqlCommand(query, Database.db);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -86,6 +96,7 @@ namespace CineBase.Controllers
                 Title = reader.GetString(1),
                 OriginalTitle = reader.GetString(2),
                 Description = reader.GetString(3),
+                Genre = genre,
             };
             query = string.Format("SELECT [Content] FROM [List] WHERE [Id] = {0}", genre);
             cmd = new SqlCommand(query, Database.db);
@@ -231,7 +242,7 @@ namespace CineBase.Controllers
             while (reader.Read())
             {
                 string userQuery = string.Format("SELECT [Username] FROM [User] WHERE [Id] = {0}", reader.GetInt32(0));
-                SqlCommand newCmd = new SqlCommand(query, Database.db);                
+                SqlCommand newCmd = new SqlCommand(query, Database.db);
                 comments.Add(new Comment
                 {
                     UserId = reader.GetInt32(0),
@@ -258,10 +269,38 @@ namespace CineBase.Controllers
             }
             if (ratings.Count > 0)
                 item.Rating = (float)ratings.Average();
-            return View(item);
+            List<Person> people = new List<Person>();
+            query = string.Format("SELECT [Id], [Firstname], [Lastname] FROM [Person]");
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Person entity = new Person
+                {
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1) + " " + reader.GetString(2)
+                };
+                people.Add(entity);
+            }
+            List<ListItem> list = new List<ListItem>();
+            query = string.Format("SELECT [Id], [Content] FROM [List] WHERE [ListType] = {0}", (int)ListType.Žánr);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ListItem entity = new ListItem
+                {
+                    Id = reader.GetInt32(0),
+                    Content = reader.GetString(1)
+                };
+                list.Add(entity);
+            }
+            item.People = people;
+            item.Genres = list;
+            return item;
         }
 
-        public void _Add(MovieViewModel model)
+        public string _Add(MovieViewModel model)
         {
             int id = Database.GetLast("Movie") + 1;           
             foreach (int i in model.OverheadPeople)
@@ -278,6 +317,149 @@ namespace CineBase.Controllers
                 Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, id, i, (int)PersonType.Actor));
 
             Database.Add("[Movie]", "[Id], [Title], [OriginalTitle], [Description], [Genre]", string.Format("{0}, '{1}', '{2}', '{3}', {4}", id, model.Title, model.OriginalTitle, model.Description, model.Genre));
+
+            return "ok";
+        }
+
+        public string _Edit(MovieViewModel model)
+        {
+            Database.Update("[Movie]", string.Format("[Title] = '{0}', [OriginalTitle] = '{1}', [Description] = '{2}' , [Genre] = {3}", model.Title, model.OriginalTitle, model.Description, model.Genre), $"[Id] = {model.Id}");
+
+
+            List<int> modelPeople = new List<int>();
+            string query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Model);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                modelPeople.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.ModelPeople)
+            {
+                if (!(modelPeople.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Model));
+            }
+            foreach (int i in modelPeople)
+            {
+                if (!(model.ModelPeople.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Model);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            List<int> overhead = new List<int>();
+            query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Overhead);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                overhead.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.OverheadPeople)
+            {
+                if (!(overhead.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Overhead));
+            }
+            foreach (int i in overhead)
+            {
+                if (!(model.OverheadPeople.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Overhead);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            List<int> screenplay = new List<int>();
+            query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Scenarist);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                screenplay.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.ScreenplayPeople)
+            {
+                if (!(screenplay.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Scenarist));
+            }
+            foreach (int i in screenplay)
+            {
+                if (!(model.ScreenplayPeople.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Scenarist);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            List<int> camera = new List<int>();
+            query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Cameraman);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                camera.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.CameraPeople)
+            {
+                if (!(camera.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Cameraman));
+            }
+            foreach (int i in camera)
+            {
+                if (!(model.CameraPeople.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Cameraman);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            List<int> sound = new List<int>();
+            query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Sound);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                sound.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.SoundPeople)
+            {
+                if (!(sound.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Sound));
+            }
+            foreach (int i in sound)
+            {
+                if (!(model.SoundPeople.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Sound);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            List<int> actors = new List<int>();
+            query = string.Format("SELECT [PersonId] FROM [Creators] WHERE [MovieId] = {0} AND [Type] = {1}", model.Id, (int)PersonType.Actor);
+            cmd = new SqlCommand(query, Database.db);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                actors.Add(reader.GetInt32(0));
+            }
+            foreach (int i in model.Actors)
+            {
+                if (!(actors.Contains(i)))
+                    Database.Add("[Creators]", "[Id], [MovieId], [PersonId], [Type]", string.Format("{0}, {1}, {2}, {3}", Database.GetLast("Creators") + 1, model.Id, i, (int)PersonType.Actor));
+            }
+            foreach (int i in actors)
+            {
+                if (!(model.Actors.Contains(i)))
+                {
+                    query = string.Format("DELETE FROM [Creators] WHERE [PersonId] = {0} AND [MovieId] = {1} AND [Type] = {2}", i, model.Id, (int)PersonType.Actor);
+                    cmd = new SqlCommand(query, Database.db);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return "ok";
         }
 
         public void _Rate(int movieId, int rating)
@@ -300,6 +482,13 @@ namespace CineBase.Controllers
         public void _Comment(int movieId, string comment)
         {
             Database.Add("[Comment]", "[Id], [UserId], [MovieId], [Comment]", string.Format("{0}, {1}, {2}, '{3}'", Database.GetLast("Comment") + 1, Request.Cookies["userId"], movieId, comment));
+        }
+
+        public void _Delete(int id)
+        {
+            string query = string.Format("DELETE FROM [Movie] WHERE [Id] = {0}", id);
+            SqlCommand cmd = new SqlCommand(query, Database.db);
+            cmd.ExecuteNonQuery();
         }
     }
 }

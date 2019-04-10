@@ -4,7 +4,7 @@
     <div class="col-lg-12 col-md-12 col-xs-12">
         <div class="row">
             <div class="form-area">
-                <h2>@Html.Raw(Model.Title)&nbsp;<button class="btn-sm btn-info" id="edit" onclick="location.replace('/Movies/Edit/@Model.Id')" style="display:none">Upravit</button></h2>
+                <h2>@Html.Raw(Model.Title)&nbsp;<button class="btn-sm btn-info" id="edit" onclick="location.replace('/Movies/Edit/@Model.Id')" style="display:none">Upravit</button><button class="btn-sm btn-danger" id="del" onclick="deleteFunc()" style="display:none">Smazat</button></h2>
                 <div class="row">
                     <span class="col-md-2 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
                     @Html.Raw(Model.OriginalTitle)
@@ -139,6 +139,15 @@
         }
         if (parseInt(getCookie("userType")) > 0) {
             $("#edit").show();
+            $("#del").show();
+        }
+
+    }
+
+    function deleteFunc() {
+        if (confirm("Opravdu chcete smazat film?")) {
+            $.post('/Movies/_Delete', { id: @Model.Id });
+            setTimeout(location.replace("/Movies"), 500);
         }
 
     }

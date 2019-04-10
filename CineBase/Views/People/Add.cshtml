@@ -2,35 +2,36 @@
 
 <div id="add-form" class="panel panel-default view-area">
     <div class="col-lg-12 col-md-12 col-xs-12">
+        <h2>Přidat ososbnost</h2>
         <div class="row">
             <div class="form-area">
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Firstname)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Firstname)</span>
                     @Html.EditorFor(x => x.Firstname)
                     @Html.ValidationMessageFor(x => x.Firstname)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Lastname)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Lastname)</span>
                     @Html.EditorFor(x => x.Lastname)
                     @Html.ValidationMessageFor(x => x.Lastname)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Birthdate)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Birthdate)</span>
                     @Html.EditorFor(x => x.Birthdate)
                     @Html.ValidationMessageFor(x => x.Birthdate)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Deathdate)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Deathdate)</span>
                     @Html.EditorFor(x => x.Deathdate)
                     @Html.ValidationMessageFor(x => x.Deathdate)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Birthplace)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Birthplace)</span>
                     @Html.EditorFor(x => x.Birthplace)
                     @Html.ValidationMessageFor(x => x.Birthplace)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Bio)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Bio)</span>
                     @Html.EditorFor(x => x.Bio)
                     @Html.ValidationMessageFor(x => x.Bio)
                 </div>
@@ -52,6 +53,12 @@
             birthplace: $("#Birthplace").val(),
             bio: $("#Bio").val(),
         };
-        $.post("/People/_Add", model);
+        $.post("/People/_Add", model, function (response) {
+            if (response == "ok") {
+                setTimeout(location.replace("/People"), 500);
+            }
+            else
+                alert("Při zpacovávání došlo k chybě.")
+        });
     }
 </script>

@@ -16,7 +16,9 @@ namespace CineBase
     {
         public static void Main(string[] args)
         {
-            Database.SetDb(@"Data Source=LUKIN-PC\SqlExpress; Initial Catalog=CineBaseDb; Integrated Security=True; MultipleActiveResultSets=true");
+            StreamReader reader = new StreamReader("connectionString.txt");
+            string connectionString = reader.ReadLine();
+            Database.SetDb(connectionString);
             BuildWebHost(args).Run();
         }
 

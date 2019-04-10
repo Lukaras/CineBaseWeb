@@ -1,0 +1,15 @@
+﻿@model List<UserDetailsViewModel>
+
+<div class="col-xs-12" style="min-height: 550px">
+    <h2>Seznam uživatelů v databázi</h2>
+    <table>
+        @foreach (UserDetailsViewModel m in Model)
+        {
+            <tr>
+                <td class="col-md-3"><b>@Html.Raw(m.Username)</b></td>
+                <td class="col-md-3">@Html.Raw(m.TypeText)</td>
+                <td class="col-md-3"><a href="/User/Detail/@m.Id" class="btn btn-success">Zobrazit</a></td>
+            </tr>
+        }
+    </table>
+</div>

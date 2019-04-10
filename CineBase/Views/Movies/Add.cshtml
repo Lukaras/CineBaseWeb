@@ -5,18 +5,18 @@
         <div class="row">
             <div class="form-area">
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Title)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Title)</span>
                     @Html.EditorFor(x => x.Title)
                     @Html.ValidationMessageFor(x => x.Title)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.OriginalTitle)</span>
                     @Html.EditorFor(x => x.OriginalTitle)
                     @Html.ValidationMessageFor(x => x.OriginalTitle)
                 </div>
                 <div class="row">
                     <div class="overhead">
-                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.OverheadPeople)</span>
+                        <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.OverheadPeople)</span>
                         <select class="overheadP">
                             <option value="0">Vyberte osobu</option>
                             @foreach (Person p in Model.People)
@@ -29,7 +29,7 @@
                 </div>
                 <div class="row">
                     <div class="model">
-                        <span class="col-md-2 control-label">@Html.LabelFor(x => x.ModelPeople)</span>
+                        <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.ModelPeople)</span>
                         <select class="modelP">
                             <option value="0">Vyberte osobu</option>
                             @foreach (Person p in Model.People)
@@ -41,7 +41,7 @@
                     <a onclick="addPerson('model')">+Přidat</a>
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.ScreenplayPeople)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.ScreenplayPeople)</span>
                     <div class="screenplay">
                         <select class="screenplayP">
                             <option value="0">Vyberte osobu</option>
@@ -54,7 +54,7 @@
                     <a onclick="addPerson('screenplay')">+Přidat</a>
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.CameraPeople)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.CameraPeople)</span>
                     <div class="camera">
                         <select class="cameraP">
                             <option value="0">Vyberte osobu</option>
@@ -67,7 +67,7 @@
                     <a onclick="addPerson('camera')">+Přidat</a>
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.SoundPeople)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.SoundPeople)</span>
                     <div class="sound">
                         <select class="soundP">
                             <option value="0">Vyberte osobu</option>
@@ -80,7 +80,7 @@
                     <a onclick="addPerson('sound')">+Přidat</a>
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Actors)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Actors)</span>
                     <div class="actors">
                         <select class="actorsP">
                             <option value="0">Vyberte osobu</option>
@@ -93,12 +93,12 @@
                     <a onclick="addPerson('actors')">+Přidat</a>
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Description)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Description)</span>
                     @Html.EditorFor(x => x.Description)
                     @Html.ValidationMessageFor(x => x.Description)
                 </div>
                 <div class="row">
-                    <span class="col-md-2 control-label">@Html.LabelFor(x => x.Genre)</span>
+                    <span class="col-sm-2 col-xs-5 control-label">@Html.LabelFor(x => x.Genre)</span>
                     @Html.DropDownList("Genre", new SelectList(Model.Genres, "Id", "Content"))
                     @Html.ValidationMessageFor(x => x.Genre)
                 </div>
@@ -162,7 +162,13 @@
             soundPeople: sound,
             actors: actors,
         };
-        $.post("/Movies/_Add", model);
+        $.post("/Movies/_Add", model, function (response) {
+            if (response == "ok") {
+                setTimeout(location.replace("/Movies"), 500);
+            }
+            else
+                alert("Při zpacovávání došlo k chybě.")
+        });
     }
 
     function addPerson(cls) {
