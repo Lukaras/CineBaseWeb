@@ -16,9 +16,11 @@ namespace CineBase
     {
         public static void Main(string[] args)
         {
-            StreamReader reader = new StreamReader("connectionString.txt");
-            string connectionString = reader.ReadLine();
-            Database.SetDb(connectionString);
+            using (StreamReader reader = new StreamReader("connectionString.txt"))
+            {
+                string connectionString = reader.ReadLine();
+                Database.SetDb(connectionString);
+            }
             BuildWebHost(args).Run();
         }
 

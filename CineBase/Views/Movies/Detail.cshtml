@@ -122,11 +122,12 @@
 
     function rate() {
         $.post("/Movies/_Rate", { movieId: @Model.Id, rating: $("#rating").val(), });
+        setTimeout(location.reload(), 500);
     }
 
     function comment() {
         $.post("/Movies/_Comment", { movieId: @Model.Id, comment: $("#comment").val(), });
-        location.reload();
+        setTimeout(location.reload(), 500);
     }
 
     function loadInt() {

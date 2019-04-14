@@ -51,6 +51,7 @@
             }
             else {
                 $.post("/User/Add", model);
+                setTimeout(location.replace("/User/Login"), 500);
             }
         });       
     }
