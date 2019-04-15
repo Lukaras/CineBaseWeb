@@ -11,12 +11,20 @@ namespace CineBase
         public static SqlConnection db;
         public static string Username = string.Empty;
 
-        public static void SetDb(string connectionString)
+        public static bool SetDb(string connectionString)
         {
-            if (db != null)
-                db.Close();
-            db = new SqlConnection(connectionString);
-            db.Open();
+            try
+            {
+                if (db != null)
+                    db.Close();
+                db = new SqlConnection(connectionString);
+                db.Open();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static void Add(string table, string columns, string values)
